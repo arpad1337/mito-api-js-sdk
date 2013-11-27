@@ -1,12 +1,12 @@
-var MitoSDKError = function(msg, cause) {
-	this.name = "MitoSDKError";
+var MitoApiSDKError = function(msg, cause) {
+	this.name = "MitoApiSDKError";
 	this.message = msg;
 	this.cause = cause;
 };
-MitoSDKError.prototype = new Error();
-MitoSDKError.prototype.constructor = MitoSDKError;
+MitoApiSDKError.prototype = new Error();
+MitoApiSDKError.prototype.constructor = MitoApiSDKError;
 
-var MitoSDK = (function() {
+var MitoApiSDK = (function() {
 	"use strict";
 	var _apiUrl = "http://api.mito.hu";
 	var _isCreated = false,
@@ -36,7 +36,7 @@ var MitoSDK = (function() {
 		}
 		if (i < endpoint.length) {
 			console.log(this);
-			throw new MitoSDKError('Unknown endpoint.', endpoint);
+			throw new MitoApiSDKError('Unknown endpoint.', endpoint);
 		}
 		return p;
 	};
@@ -86,22 +86,21 @@ var MitoSDK = (function() {
 		}
 		return http;
 	};
-	var _buildUrl = function(route,params){
+	var _buildUrl = function(route, params) {
 		var url = _apiUrl;
 		var path = route.path;
 		var k = new RegExp("/{key}/g");
-		if(k.test(path) && !("key" in _options) ) throw new MitoSDKError("Access token is missing.", _options);
+		if (k.test(path) && !("key" in _options)) throw new MitoApiSDKError("Access token is missing.", _options);
 		var p;
-		for(p in params)
-		{
-			path = path.replace('{'+p+'}',params[p]);
+		for (p in params) {
+			path = path.replace('{' + p + '}', encodeURIComponent(params[p]));
 		}
-		path = path.replace('{key}',_options.key);
+		path = path.replace('{key}', _options.key);
 		return _apiUrl + path;
 	};
-	var _apiCall = function(route, data, callback, errorCallback) {
+	var _apiCall = function(route, params, callback, errorCallback) {
 		var http = _getXHR();
-		http.open('GET', _buildUrl(route,data) , true);
+		http.open('GET', _buildUrl(route, params), true);
 		http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		_handleReadyState(http, callback, errorCallback);
 		http.send();
@@ -109,27 +108,31 @@ var MitoSDK = (function() {
 	};
 	return {
 		init: function(options) {
-			if (_isCreated) throw new MitoSDKError("Only one instance is allowed.", this);
+			if (_isCreated) throw new MitoApiSDKError("Only one instance is allowed.", this);
 			else _isCreated = true;
 			_options = options || {};
 		},
 		api: function() {
 			if (!_isCreated) {
-				throw new MitoSDKError("MitoSDK is not initialized.", this);
+				throw new MitoApiSDKError("MitoSDK is not initialized.", this);
 			}
 			var args = Array.prototype.slice.call(arguments, 0);
 			if (args.length < 3) {
-				throw new MitoSDKError('Unsupported call.', args);
+				throw new MitoApiSDKError('Unsupported call.', args);
 			}
+			if (typeof args[2] !== "function") throw new MitoApiSDKError("Callback is not a function");
+			if (args[3] && typeof args[3] !== "function") throw new MitoApiSDKError("ErrorCallback is not a function");
 			var endpoint = args[0].substring(0, 1) == "/" ? args[0].substring(1).split('/') : args[0].split('/');
 			// route validation
 			var route = _checkEndpoint(endpoint, 0, _routes);
 			// parameter validation
 			var p;
 			for (p in route.params) {
-				if (!(route.params[p] in args[1])) throw new MitoSDKError('Missing parameter: ' + route.params[p] + '.', route.params);
+				if (!(route.params[p] in args[1])) throw new MitoApiSDKError('Missing parameter: ' + route.params[p] + '.', route.params);
 			}
-			_buildUrl(route,args[1]);
+			_buildUrl(route, args[1]);
+			3
+			_apiCall(route, args[1], args[2], args[3]);
 		},
 		getRoutes: function() {
 			return _routes;

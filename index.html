@@ -11,17 +11,65 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <!--[if lt IE 8]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <h1>MITO JS SDK</h1>
+        <h2>Description</h2>
+        <p>jQuery-less browser plugin for gaining data from api.mito.hu.</p>
+        <h2>Usage:</h2>
+        <pre>
+            MitoApiSDK.init({
+                key: "KEY" // api key comes here
+            });
 
-        <h1>MITO JS SDK Demo</h1>
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+            MitoApiSDK.api('/phone/withcountry',{
+                    'country':'hu',
+                    'phonenumber':'+36123456789'
+                },
+                function(r) {
+                    // avoiding unnesesarry memory allocation in IE when 
+                    // accessing property as following: obj.prop
+                    if("error" in r) {
+                        // error handling first, best practice
+                    } else { console.log(r); }
+                }
+            );  
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/main.js"></script>
-        <script src="build/mito-sdk.js"></script>
+            // OR by using errorCallback:
+
+            MitoApiSDK.api('/phone/withcountry',{
+                    'country':'hu',
+                    'phonenumber':'+36123456789'
+                },
+                function(r) {
+                    console.log(r);
+                },
+                function(err) {
+                    console.log(err);
+                }
+            );   
+        </pre>
+        <h2>Routes:</h2>
+        <ul>    
+            <li>/phone
+                <ul>
+                    <li>
+                        <p><strong>/bynumber</strong></p>
+                        <p><em>search, firstname, lastname, city</em></p>
+                    </li>
+                    <li>
+                        <p><strong>/withcountry</strong></p>
+                        <p><em>phonenumber, country</em></p>
+                    </li>
+                    <li>
+                        <p><strong>/search</strong></p>
+                        <p><em>phonenumber</em></p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>To do:</h2>
+        <ul>
+            <li>add all the routes</li>
+        </ul>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
