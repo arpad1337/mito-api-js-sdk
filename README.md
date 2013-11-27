@@ -3,36 +3,36 @@
 <p>jQuery-less browser plugin for gaining data from api.mito.hu.</p>
 <h2>Usage:</h2>
 <pre>
-    MitoApiSDK.init({
-        key: "KEY" // api key comes here
-    });
+MitoApiSDK.init({
+    key: "KEY" // api key comes here
+});
 
-    MitoApiSDK.api('/phone/withcountry',{
-            'country':'hu',
-            'phonenumber':'+36123456789'
-        },
-        function(r) {
-            // avoiding unnesesarry memory allocation in IE when 
-            // accessing property as following: obj.prop
-            if("error" in r) {
-                // error handling first, best practice
-            } else { console.log(r); }
-        }
-    );  
+MitoApiSDK.api('/phone/withcountry',{
+        'country':'hu',
+        'phonenumber':'+36123456789'
+    },
+    function(r) {
+        // avoiding unnesesarry memory allocation in IE when 
+        // accessing property as following: obj.prop
+        if("error" in r) {
+            // error handling first, best practice
+        } else { console.log(r); }
+    }
+);  
 
-    // OR by using errorCallback:
+// OR by using errorCallback:
 
-    MitoApiSDK.api('/phone/withcountry',{
-            'country':'hu',
-            'phonenumber':'+36123456789'
-        },
-        function(r) {
-            console.log(r);
-        },
-        function(err) {
-            console.log(err);
-        }
-    );   
+MitoApiSDK.api('/phone/withcountry',{
+        'country':'hu',
+        'phonenumber':'+36123456789'
+    },
+    function(r) {
+        console.log(r);
+    },
+    function(err) {
+        console.log(err);
+    }
+);   
 </pre>
 <h2>Routes:</h2>
 <ul>    
