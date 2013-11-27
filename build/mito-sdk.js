@@ -1,5 +1,5 @@
 var MitoApiSDKError = function(msg, cause) {
-	this.name = "MitoApiSDKError";
+	this.name = 'MitoApiSDKError';
 	this.message = msg;
 	this.cause = cause;
 };
@@ -7,24 +7,24 @@ MitoApiSDKError.prototype = new Error();
 MitoApiSDKError.prototype.constructor = MitoApiSDKError;
 
 var MitoApiSDK = (function(w) {
-	"use strict";
-	var _apiUrl = "http://api.mito.hu";
+	'use strict';
+	var _apiUrl = 'http://api.mito.hu';
 	var _isCreated = false,
 		_options;
 	/* TO DO: fill all the routes */
 	var _routes = {
 		'phone': {
-			"bynumber": {
-				"params": ["phonenumber"],
-				"path": "/api/{key}/phone/{phonenumber}"
+			'bynumber': {
+				'params': ['phonenumber'],
+				'path': '/api/{key}/phone/{phonenumber}'
 			},
-			"withcountry": {
-				"params": ["phonenumber", "country"],
-				"path": "/api/{key}/phone/{country}/{phonenumber}"
+			'withcountry': {
+				'params': ['phonenumber', 'country'],
+				'path': '/api/{key}/phone/{country}/{phonenumber}'
 			},
-			"search": {
-				"params": ["country", "firstname", "lastname", "city"],
-				"path": "/api/{key}/phone/search/{country}/{firstname}/{lastname}/{city}"
+			'search': {
+				'params': ['country', 'firstname', 'lastname', 'city'],
+				'path': '/api/{key}/phone/search/{country}/{firstname}/{lastname}/{city}'
 			}
 		}
 	};
@@ -41,12 +41,12 @@ var MitoApiSDK = (function(w) {
 	};
 	var _handleReadyState = function(o, callback, errorCallback) {
 		var poll = setInterval(function() {
-			if (o && o.readyState == 4) {
+			if (o && o.readyState === 4) {
 				w.clearInterval(poll);
-				if(o.responseText === "") throw new MitoApiSDKError("It seems, the api hung down temporary.",o);
+				if(o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.',o);
 				eval('var data = '+o.responseText+';'); // cross-browser JSON.parse
 				if (o.status == 200) {
-					if ("error" in data && errorCallback) {
+					if ('error' in data && errorCallback) {
 						errorCallback.call(o, data); // assign response to this
 						return;
 					}
@@ -88,10 +88,9 @@ var MitoApiSDK = (function(w) {
 		return http;
 	};
 	var _buildUrl = function(route, params) {
-		var url = _apiUrl;
 		var path = route.path;
-		var k = new RegExp("/{key}/g"); // adding "g" at the end for performance enhancement
-		if (k.test(path) && !("key" in _options)) throw new MitoApiSDKError("Access token is missing.", _options);
+		var k = new RegExp('/{key}/g'); // adding 'g' at the end for performance enhancement
+		if (k.test(path) && !('key' in _options)) throw new MitoApiSDKError('Access token is missing.', _options);
 		var p;
 		for (p in params) {
 			path = path.replace('{' + p + '}', w.encodeURIComponent(params[p]));
@@ -102,28 +101,28 @@ var MitoApiSDK = (function(w) {
 	var _apiCall = function(route, params, callback, errorCallback) {
 		var http = _getXHR();
 		http.open('GET', _buildUrl(route, params), true);
-		http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		_handleReadyState(http, callback, errorCallback);
 		http.send();
 		return http;
 	};
 	return {
 		init: function(options) {
-			if (_isCreated) throw new MitoApiSDKError("Only one instance is allowed.", this);
+			if (_isCreated) throw new MitoApiSDKError('Only one instance is allowed.', this);
 			else _isCreated = true;
 			_options = options || {};
 		},
 		api: function() {
 			if (!_isCreated) {
-				throw new MitoApiSDKError("MitoSDK is not initialized.", this);
+				throw new MitoApiSDKError('MitoSDK is not initialized.', this);
 			}
 			var args = Array.prototype.slice.call(arguments, 0);
 			if (args.length < 3) {
 				throw new MitoApiSDKError('Unsupported call.', args);
 			}
-			if (typeof args[2] !== "function") throw new MitoApiSDKError("Callback is not a function");
-			if (args[3] && typeof args[3] !== "function") throw new MitoApiSDKError("ErrorCallback is not a function");
-			var endpoint = args[0].substring(0, 1) == "/" ? args[0].substring(1).split('/') : args[0].split('/');
+			if (typeof args[2] !== 'function') throw new MitoApiSDKError('Callback is not a function');
+			if (args[3] && typeof args[3] !== 'function') throw new MitoApiSDKError('ErrorCallback is not a function');
+			var endpoint = args[0].substring(0, 1) === '/' ? args[0].substring(1).split('/') : args[0].split('/');
 			// route validation
 			var route = _checkEndpoint(endpoint, 0, _routes);
 			// parameter validation
