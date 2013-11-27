@@ -13,7 +13,8 @@ MitoApiSDK.api('/phone/withcountry',{
     },
     function(r) {
         // avoiding unnesesarry memory allocation in IE when 
-        // accessing property as following: obj.prop
+        // accessing property as following: obj.prop (even if 
+        // the value is undefined...)
         if("error" in r) {
             // error handling first, best practice
         } else { console.log(r); }
@@ -39,7 +40,7 @@ MitoApiSDK.api('/phone/withcountry',{
 <li>/phone
 <ul>
 <li>
-<p><strong>/bynumber</strong></p>
+<p><strong>/search</strong></p>
 <p><em>search, firstname, lastname, city</em></p>
 </li>
 <li>
@@ -47,7 +48,7 @@ MitoApiSDK.api('/phone/withcountry',{
 <p><em>phonenumber, country</em></p>
 </li>
 <li>
-<p><strong>/search</strong></p>
+<p><strong>/bynumber</strong></p>
 <p><em>phonenumber</em></p>
 </li>
 </ul>
