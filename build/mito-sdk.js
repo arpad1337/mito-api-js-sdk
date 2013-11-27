@@ -6,7 +6,7 @@ var MitoApiSDKError = function(msg, cause) {
 MitoApiSDKError.prototype = new Error();
 MitoApiSDKError.prototype.constructor = MitoApiSDKError;
 
-var MitoApiSDK = (function() {
+var MitoApiSDK = (function(w) {
 	"use strict";
 	var _apiUrl = "http://api.mito.hu";
 	var _isCreated = false,
@@ -35,7 +35,6 @@ var MitoApiSDK = (function() {
 			return _checkEndpoint(endpoint, i, p);
 		}
 		if (i < endpoint.length) {
-			console.log(this);
 			throw new MitoApiSDKError('Unknown endpoint.', endpoint);
 		}
 		return p;
@@ -43,19 +42,20 @@ var MitoApiSDK = (function() {
 	var _handleReadyState = function(o, callback, errorCallback) {
 		var poll = setInterval(function() {
 			if (o && o.readyState == 4) {
-				window.clearInterval(poll);
+				w.clearInterval(poll);
+				if(o.responseText === "") throw new MitoApiSDKError("It seems, the api hung down temporary.",o);
 				eval('var data = '+o.responseText+';');
 				if (o.status == 200) {
 					if ("error" in data && errorCallback) {
-						errorCallback.call(this, data);
+						errorCallback.call(o, data);
 						return;
 					}
 					if (callback) {
-						callback.call(this, data);
+						callback.call(o, data);
 					}
-				} else if (o.status == 400) {
+				} else if (o.status >= 400) {
 					if (errorCallback) {
-						errorCallback.call(this, data);
+						errorCallback.call(o, data);
 					}
 				}
 			}
@@ -93,7 +93,7 @@ var MitoApiSDK = (function() {
 		if (k.test(path) && !("key" in _options)) throw new MitoApiSDKError("Access token is missing.", _options);
 		var p;
 		for (p in params) {
-			path = path.replace('{' + p + '}', encodeURIComponent(params[p]));
+			path = path.replace('{' + p + '}', w.encodeURIComponent(params[p]));
 		}
 		path = path.replace('{key}', _options.key);
 		return _apiUrl + path;
@@ -136,4 +136,4 @@ var MitoApiSDK = (function() {
 			return _routes;
 		}
 	};
-})();
+})(window);
