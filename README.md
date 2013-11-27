@@ -41,7 +41,7 @@ MitoApiSDK.api('/phone/withcountry',{
 <ul>
 <li>
 <p><strong>/search</strong></p>
-<p><em>search, firstname, lastname, city</em></p>
+<p><em>country, firstname, lastname, city</em></p>
 </li>
 <li>
 <p><strong>/withcountry</strong></p>

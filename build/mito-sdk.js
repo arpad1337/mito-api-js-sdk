@@ -23,7 +23,7 @@ var MitoApiSDK = (function() {
 				"path": "/api/{key}/phone/{country}/{phonenumber}"
 			},
 			"search": {
-				"params": ["search", "firstname", "lastname", "city"],
+				"params": ["country", "firstname", "lastname", "city"],
 				"path": "/api/{key}/phone/search/{country}/{firstname}/{lastname}/{city}"
 			}
 		}
