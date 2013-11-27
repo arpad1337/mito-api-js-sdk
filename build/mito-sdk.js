@@ -130,8 +130,6 @@ var MitoApiSDK = (function() {
 			for (p in route.params) {
 				if (!(route.params[p] in args[1])) throw new MitoApiSDKError('Missing parameter: ' + route.params[p] + '.', route.params);
 			}
-			_buildUrl(route, args[1]);
-			3
 			_apiCall(route, args[1], args[2], args[3]);
 		},
 		getRoutes: function() {
