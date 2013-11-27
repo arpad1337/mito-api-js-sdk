@@ -90,7 +90,7 @@ var MitoApiSDK = (function(w) {
 	var _buildUrl = function(route, params) {
 		var path = route.path;
 		var k = new RegExp('/{key}/g'); // adding 'g' at the end for performance enhancement
-		if (k.test(path) && !('key' in _options)) throw new MitoApiSDKError('Access token is missing.', _options);
+		if (k.test(path) && !('key' in _options)) throw new MitoApiSDKError('API KEY is missing.', _options);
 		var p;
 		for (p in params) {
 			path = path.replace('{' + p + '}', w.encodeURIComponent(params[p]));
