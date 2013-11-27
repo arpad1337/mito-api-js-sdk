@@ -1,6 +1,6 @@
 <h1>MITO JS SDK</h1>
 <h2>Description</h2>
-<p>jQuery-less browser plugin for gaining data from api.mito.hu.</p>
+<p>jQuery-less plugin for gaining data from api.mito.hu.</p>
 <h2>Usage:</h2>
 <pre>
 MitoApiSDK.init({

@@ -44,7 +44,7 @@ var MitoApiSDK = (function() {
 		var poll = setInterval(function() {
 			if (o && o.readyState == 4) {
 				window.clearInterval(poll);
-				var data = JSON.parse(o.responseText);
+				eval('var data = '+o.responseText+';');
 				if (o.status == 200) {
 					if ("error" in data && errorCallback) {
 						errorCallback.call(this, data);
