@@ -44,10 +44,10 @@ var MitoApiSDK = (function(w) {
 			if (o && o.readyState == 4) {
 				w.clearInterval(poll);
 				if(o.responseText === "") throw new MitoApiSDKError("It seems, the api hung down temporary.",o);
-				eval('var data = '+o.responseText+';');
+				eval('var data = '+o.responseText+';'); // cross-browser JSON.parse
 				if (o.status == 200) {
 					if ("error" in data && errorCallback) {
-						errorCallback.call(o, data);
+						errorCallback.call(o, data); // assign response to this
 						return;
 					}
 					if (callback) {
@@ -69,6 +69,7 @@ var MitoApiSDK = (function(w) {
 				return new XMLHttpRequest();
 			};
 		} catch (e) {
+			// shitty IE fallback, override after first call
 			var msxml = [
 				'MSXML2.XMLHTTP.3.0',
 				'MSXML2.XMLHTTP',
@@ -89,7 +90,7 @@ var MitoApiSDK = (function(w) {
 	var _buildUrl = function(route, params) {
 		var url = _apiUrl;
 		var path = route.path;
-		var k = new RegExp("/{key}/g");
+		var k = new RegExp("/{key}/g"); // adding "g" at the end for performance enhancement
 		if (k.test(path) && !("key" in _options)) throw new MitoApiSDKError("Access token is missing.", _options);
 		var p;
 		for (p in params) {
@@ -136,4 +137,4 @@ var MitoApiSDK = (function(w) {
 			return _routes;
 		}
 	};
-})(window);
+})(window); // separate global namespace from local clojure
