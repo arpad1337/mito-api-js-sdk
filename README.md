@@ -1,6 +1,7 @@
 ## MITO SDK
-# usage example: 
+usage example: 
 
+```
 MitoSDK.init({
 	key: "KEY"
 });
@@ -13,3 +14,4 @@ MitoSDK.api('/phone',{
 		if("error" in r) { } else { console.log(r); }
 	}
 );
+```
