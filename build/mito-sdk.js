@@ -9,7 +9,7 @@ MitoApiSDKError.prototype.constructor = MitoApiSDKError;
 var MitoApiSDK = (function(w) {
 	'use strict';
 	var _apiUrl = 'http://api.mito.hu';
-	var _isCreated = false,
+	var _isInitialized = false,
 		_options;
 	/* TO DO: fill all the routes */
 	var _routes = {
@@ -45,14 +45,12 @@ var MitoApiSDK = (function(w) {
 				w.clearInterval(poll);
 				if(o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.',o);
 				eval('var data = '+o.responseText+';'); // cross-browser JSON.parse
-				if (o.status == 200) {
+				if (o.status === 200) {
 					if ('error' in data && errorCallback) {
 						errorCallback.call(o, data); // assign response to this
 						return;
 					}
-					if (callback) {
-						callback.call(o, data);
-					}
+					callback.call(o, data);
 				} else if (o.status >= 400) {
 					if (errorCallback) {
 						errorCallback.call(o, data);
@@ -108,13 +106,13 @@ var MitoApiSDK = (function(w) {
 	};
 	return {
 		init: function(options) {
-			if (_isCreated) throw new MitoApiSDKError('Only one instance is allowed.', this);
-			else _isCreated = true;
+			if (_isInitialized) throw new MitoApiSDKError('SDK is initialized.', this);
+			_isInitialized = true;
 			_options = options || {};
 		},
 		api: function() {
-			if (!_isCreated) {
-				throw new MitoApiSDKError('MitoSDK is not initialized.', this);
+			if (!_isInitialized) {
+				throw new MitoApiSDKError('SDK is not initialized.', this);
 			}
 			var args = Array.prototype.slice.call(arguments, 0);
 			if (args.length < 3) {

@@ -1,7 +1,7 @@
 <h1>MITO JS SDK</h1>
 <h2>Description</h2>
 <p>jQuery-less plugin for gaining data from api.mito.hu.</p>
-<h2>Usage:</h2>
+<h2>Usage</h2>
 <pre>
 MitoApiSDK.init({
     key: "KEY" // api key comes here
@@ -13,11 +13,13 @@ MitoApiSDK.api('/phone/withcountry',{
     },
     function(r) {
         // avoiding unnesesarry memory allocation in IE when 
-        // accessing property as following: obj.prop (even if 
+        // accessing property as following: obj.prop (even if
         // the value is undefined...)
         if("error" in r) {
             // error handling first, best practice
-        } else { console.log(r); }
+            return;
+        } 
+        console.log(r);
     }
 );  
 
@@ -35,7 +37,7 @@ MitoApiSDK.api('/phone/withcountry',{
     }
 );   
 </pre>
-<h2>Routes:</h2>
+<h2>Routes</h2>
 <ul>    
 <li>/phone
 <ul>
@@ -54,7 +56,14 @@ MitoApiSDK.api('/phone/withcountry',{
 </ul>
 </li>
 </ul>
-<h2>To do:</h2>
+<h2>To do</h2>
 <ul>
 <li>add all the routes</li>
 </ul>
+<h2>Testing</h2>
+<ol>
+<li>get an API KEY from Bence Faludi (b.faludi@mito.hu)</li>
+<li>git clone ...</li>
+<li>open up index.html</li>
+<li>initialize and call the api</li>
+</ol>
