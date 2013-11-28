@@ -43,8 +43,9 @@ var MitoApiSDK = (function(w) {
 		var poll = setInterval(function() {
 			if (o && o.readyState === 4) {
 				w.clearInterval(poll);
+				var data;
 				if(o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.',o);
-				eval('var data = '+o.responseText+';'); // cross-browser JSON.parse
+				eval('data = '+o.responseText+';'); // cross-browser JSON.parse
 				if (o.status === 200) {
 					if ('error' in data && errorCallback) {
 						errorCallback.call(o, data); // assign response to this
