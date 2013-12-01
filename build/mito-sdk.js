@@ -26,6 +26,50 @@ var MitoApiSDK = (function(w) {
 				'params': ['country', 'firstname', 'lastname', 'city'],
 				'path': '/api/{key}/phone/search/{country}/{firstname}/{lastname}/{city}'
 			}
+		},
+		'email': {
+			'params': ['email'],
+			'path': '/api/{key}/email/{email}'
+		},
+		'name': {
+			'bycountry': {
+				'params': ['country', 'firstname', 'lastname'],
+				'path': '/api/{key}/name/popularity/{country}/{firstname}/{lastname}'
+			},
+			'withcity': {
+				'params': ['country', 'firstname', 'lastname', 'city'],
+				'path': '/api/{key}/name/popularity/{country}/{firstname}/{lastname}/city/{city}'
+			}
+		},
+		'identifier': {
+			'personalid': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/id/{number}'
+			},
+			'taxnumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/tax/{number}'
+			},
+			'firmnumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/firm/{number}'
+			},
+			'accountnumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/account/{number}'
+			},
+			'ibannumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/iban/{number}'
+			},
+			'eannumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/ean/{number}'
+			},
+			'bicnumber': {
+				'params': ['number','country'],
+				'path': 'http://api.mito.hu/api/{key}/validator/{country}/bic/{number}'
+			}
 		}
 	};
 	var _checkEndpoint = function(endpoint, i, p) {
@@ -39,28 +83,28 @@ var MitoApiSDK = (function(w) {
 		}
 		return p;
 	};
-	var _parseJson = function( data ) {
+	var _parseJson = function(data) {
 		if ("JSON" in w) {
-			_parseJson = function( data ) {
-				return JSON.parse( data );
+			_parseJson = function(data) {
+				return JSON.parse(data);
 			};
-			return JSON.parse( data );
+			return JSON.parse(data);
 		}
-		_parseJson = function( data ) { // fallback to eval
+		_parseJson = function(data) { // fallback to eval
 			if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 				return eval('(' + data + ')');
 			}
 			throw new MitoApiSDKError('Response type is invalid!', data);
 		};
-		return _parseJson( data );
+		return _parseJson(data);
 	};
 	var _handleReadyState = function(o, callback, errorCallback) {
 		var poll = setInterval(function() {
 			if (o && o.readyState === 4) {
 				w.clearInterval(poll);
 				var data;
-				if (o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.', o);
-				data = _parseJson( o.responseText );
+				if (o.responseText.length === 0) throw new MitoApiSDKError('It seems, the api hung down temporary.', o);
+				data = _parseJson(o.responseText);
 				if (o.status === 200) {
 					if ('error' in data && errorCallback) {
 						errorCallback.call(o, data); // assign response to this
@@ -136,7 +180,7 @@ var MitoApiSDK = (function(w) {
 			}
 			if (typeof args[2] !== 'function') throw new MitoApiSDKError('Callback is not a function');
 			if (args[3] && typeof args[3] !== 'function') throw new MitoApiSDKError('ErrorCallback is not a function');
-			var endpoint = args[0].substring(0, 1) === '/' ? args[0].substring(1).split('/') : args[0].split('/');
+			var endpoint = args[0].charAt(0) === '/' ? args[0].substring(1).split('/') : args[0].split('/');
 			// route validation
 			var route = _checkEndpoint(endpoint, 0, _routes);
 			// parameter validation

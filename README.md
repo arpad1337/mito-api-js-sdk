@@ -39,7 +39,7 @@ MitoApiSDK.api('/phone/withcountry',{
 </pre>
 <h2>Routes</h2>
 <ul>    
-<li>/phone
+<li><p><strong>/phone</strong></p>
 <ul>
 <li>
 <p><strong>/search</strong></p>
@@ -52,6 +52,54 @@ MitoApiSDK.api('/phone/withcountry',{
 <li>
 <p><strong>/bynumber</strong></p>
 <p><em>phonenumber</em></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>/email</strong></p>
+<p><em>email</em></p>
+</li>
+<li><p><strong>/name</strong></p>
+<ul>
+<li>
+<p><strong>/bycountry</strong></p>
+<p><em>country, firstname, lastname</em></p>
+</li>
+<li>
+<p><strong>/withcity</strong></p>
+<p><em>country, city, firstname, lastname</em></p>
+</li>
+</ul>
+</li>
+<li><p><strong>/identifier</strong></p>
+<ul>
+<li>
+<p><strong>/personalid</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/taxnumber</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/firmnumber</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/accountnumber</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/ibannumber</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/eannumber</strong></p>
+<p><em>country, number</em></p>
+</li>
+<li>
+<p><strong>/bicnumber</strong></p>
+<p><em>country, number</em></p>
 </li>
 </ul>
 </li>
