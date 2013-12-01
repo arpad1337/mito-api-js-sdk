@@ -39,13 +39,29 @@ var MitoApiSDK = (function(w) {
 		}
 		return p;
 	};
+	var _parseJson = function( data ) {
+		if ("JSON" in w) {
+			_parseJson = function( data ) {
+				return JSON.parse( data );
+			};
+			return JSON.parse( data );
+		}
+		_parseJson = function( data ) { // fallback to eval
+			if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+				return eval('(' + data + ')');
+			}
+			throw new MitoApiSDKError('Response type is invalid!', data);
+		};
+		return _parseJson( data );
+	};
 	var _handleReadyState = function(o, callback, errorCallback) {
 		var poll = setInterval(function() {
 			if (o && o.readyState === 4) {
 				w.clearInterval(poll);
 				var data;
-				if(o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.',o);
-				eval('data = '+o.responseText+';'); // cross-browser JSON.parse
+				var s = new RegExp('/function/g');
+				if (o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.', o);
+				data = _parseJson( o.responseText );
 				if (o.status === 200) {
 					if ('error' in data && errorCallback) {
 						errorCallback.call(o, data); // assign response to this

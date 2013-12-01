@@ -65,5 +65,5 @@ MitoApiSDK.api('/phone/withcountry',{
 <li>get an API KEY from Bence Faludi (b.faludi@mito.hu)</li>
 <li>git clone ...</li>
 <li>open up index.html</li>
-<li>initialize and call the api</li>
+<li>open dev console, initialize and call the api</li>
 </ol>
