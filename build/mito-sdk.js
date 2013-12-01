@@ -59,7 +59,6 @@ var MitoApiSDK = (function(w) {
 			if (o && o.readyState === 4) {
 				w.clearInterval(poll);
 				var data;
-				var s = new RegExp('/function/g');
 				if (o.responseText === '') throw new MitoApiSDKError('It seems, the api hung down temporary.', o);
 				data = _parseJson( o.responseText );
 				if (o.status === 200) {
