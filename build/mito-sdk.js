@@ -44,31 +44,31 @@ var MitoApiSDK = (function(w) {
 		'identifier': {
 			'personalid': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/id/{number}'
+				'path': '/api/{key}/validator/{country}/id/{number}'
 			},
 			'taxnumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/tax/{number}'
+				'path': '/api/{key}/validator/{country}/tax/{number}'
 			},
 			'firmnumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/firm/{number}'
+				'path': '/api/{key}/validator/{country}/firm/{number}'
 			},
 			'accountnumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/account/{number}'
+				'path': '/api/{key}/validator/{country}/account/{number}'
 			},
 			'ibannumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/iban/{number}'
+				'path': '/api/{key}/validator/{country}/iban/{number}'
 			},
 			'eannumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/ean/{number}'
+				'path': '/api/{key}/validator/{country}/ean/{number}'
 			},
 			'bicnumber': {
 				'params': ['number','country'],
-				'path': 'http://api.mito.hu/api/{key}/validator/{country}/bic/{number}'
+				'path': '/api/{key}/validator/{country}/bic/{number}'
 			}
 		}
 	};
@@ -194,4 +194,4 @@ var MitoApiSDK = (function(w) {
 			return _routes;
 		}
 	};
-})(window); // separate global namespace from local clojure
+})(window); // separate global namespace from local closure
